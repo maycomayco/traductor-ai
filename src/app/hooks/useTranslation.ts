@@ -18,7 +18,7 @@ export const useTranslationGPT = ({ query }: { query: string }) => {
       const response = await createTranslation({ query });
 
       setTranslation(response);
-    } catch (error) {
+    } catch {
       throw new Error("Error getting translations");
     } finally {
       setLoading(false);
