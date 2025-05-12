@@ -1,6 +1,6 @@
 import { FaCopy } from "react-icons/fa";
 
-import { LoaderParagraph } from "@/app/components/loader-paragraph";
+import { LoaderParagraph } from "@/components/loader-paragraph";
 
 type TranslationsResultsProps = {
   translation: Record<string, string>;

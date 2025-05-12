@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslationGPT } from "./hooks/useTranslation";
-import { TranslationForm } from "./components/translation-form";
-import { TranslationsResults } from "./components/translation-results";
+import { useTranslationGPT } from "@/hooks/useTranslation";
+import { TranslationForm } from "@/components/translation-form";
+import { TranslationsResults } from "@/components/translation-results";
 
 export default function Home() {
   const [textareaValue, setTextareaValue] = useState("");
