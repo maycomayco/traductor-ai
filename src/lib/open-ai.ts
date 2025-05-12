@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 
 // configure OpenAI
 const configuration = new Configuration({
@@ -9,7 +9,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // training messages
-const trainingMessages = [
+const trainingMessages: ChatCompletionRequestMessage[] = [
   {
     role: "system",
     content:
@@ -52,11 +52,14 @@ export const createTranslation = async ({ query }: { query: string }) => {
         },
       ],
     });
-
     // aplicar transformacion de datos de la respuesta y validar que el objeto este formado correctamente
-    const responseContent = completion.data.choices[0].message.content;
-    const parsedResponse = JSON.parse(responseContent);
+    const responseContent = completion.data.choices[0]?.message?.content;
 
+    if (!responseContent) {
+      throw new Error("Response content is undefined");
+    }
+
+    const parsedResponse = JSON.parse(responseContent);
     return parsedResponse;
   } catch (error) {
     console.log(error);
