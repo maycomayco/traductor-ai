@@ -1,7 +1,6 @@
 "use client";
+import { createTranslation } from "@/lib/services/open-ai";
 import { useRef, useState } from "react";
-
-import { createTranslation } from "@/lib/open-ai";
 
 // este hook recibe como parámetro el texto a traducir
 export const useTranslationGPT = ({ query }: { query: string }) => {
