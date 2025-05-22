@@ -13,9 +13,9 @@ export const TranslationsResults = ({
   const arrayTranslation = Object.entries(translation);
 
   return (
-    <section className="flex flex-col gap-6">
+    <>
       {loading && <LoaderParagraph />}
       {!loading && <TranslationsList translations={arrayTranslation} />}
-    </section>
+    </>
   );
 };
