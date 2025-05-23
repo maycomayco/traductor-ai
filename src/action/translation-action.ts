@@ -1,8 +1,17 @@
 "use server";
 
 import { createTranslation } from "@/lib/services/open-ai";
+import { type Translation } from "@/types";
 
-export async function getTranslations(formData: FormData) {
+type TranslationResponse = {
+  success: boolean;
+  error: string | null;
+  translations: Translation | null;
+};
+
+export async function getTranslations(
+  formData: FormData
+): Promise<TranslationResponse> {
   try {
     const query = formData.get("query") as string;
 
@@ -10,12 +19,10 @@ export async function getTranslations(formData: FormData) {
       return {
         success: false,
         error: "El texto no puede estar vacío",
-        translations: [],
+        translations: null,
       };
     }
 
-    // Obtener las 3 traducciones propuestas
-    // Esto dependerá de la API específica que uses
     const translations = await createTranslation({ query: query });
 
     return {
@@ -28,7 +35,7 @@ export async function getTranslations(formData: FormData) {
     return {
       success: false,
       error: "Ocurrió un error al procesar la traducción",
-      translations: [],
+      translations: null,
     };
   }
 }

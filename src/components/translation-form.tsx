@@ -13,6 +13,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { getTranslations } from "@/action/translation-action";
+import { type Translation } from "@/types";
+import { type Dispatch, type SetStateAction } from "react";
 
 // schema for the form
 const formSchema = z.object({
@@ -25,8 +27,8 @@ export default function TranslationForm({
   setTranslations,
 }: {
   loading: boolean;
-  setLoading: (loading: boolean) => void;
-  setTranslations: (translations: any) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setTranslations: Dispatch<SetStateAction<Translation | null>>;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,7 +45,7 @@ export default function TranslationForm({
     try {
       setLoading(true);
       const { error, success, translations } = await getTranslations(formData);
-      if (success) {
+      if (success && translations) {
         setTranslations(translations);
       } else {
         // TODO: improve this error handling

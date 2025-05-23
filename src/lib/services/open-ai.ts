@@ -1,3 +1,4 @@
+import { type Translation } from "@/types";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 
 // configure OpenAI
@@ -35,8 +36,14 @@ const trainingMessages: ChatCompletionRequestMessage[] = [
   },
 ];
 
-export const createTranslation = async ({ query }: { query: string }) => {
-  if (query === "") return;
+type Props = {
+  query: string;
+};
+
+export async function createTranslation({ query }: Props) {
+  if (query === "") {
+    throw new Error("Query is empty");
+  }
 
   // TODO: estamos teniendo un error con axios y el user-agent, revisarlo ASAP
   try {
@@ -58,10 +65,10 @@ export const createTranslation = async ({ query }: { query: string }) => {
       throw new Error("Response content is undefined");
     }
 
-    const parsedResponse = JSON.parse(responseContent);
+    const parsedResponse: Translation = JSON.parse(responseContent);
     return parsedResponse;
   } catch (error) {
     console.log(error);
     throw new Error("Error creating translations");
   }
-};
+}

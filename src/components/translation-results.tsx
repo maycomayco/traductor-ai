@@ -1,8 +1,9 @@
 import { LoaderParagraph } from "@/components/loader-paragraph";
 import TranslationsList from "./translation-list";
+import { type Translation } from "@/types";
 
 type TranslationsResultsProps = {
-  translation: Record<string, string>;
+  translation: Translation;
   loading: boolean;
 };
 

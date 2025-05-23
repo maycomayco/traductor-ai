@@ -4,9 +4,10 @@ import { useState } from "react";
 import { TranslationsResults } from "@/components/translation-results";
 
 import TranslationForm from "@/components/translation-form";
+import { type Translation } from "@/types";
 
 export default function Home() {
-  const [translations, setTranslations] = useState({});
+  const [translations, setTranslations] = useState<Translation | null>(null);
   const [loading, setLoading] = useState(false);
 
   return (
