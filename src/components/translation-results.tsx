@@ -16,12 +16,7 @@ export const TranslationsResults = ({
   return (
     <>
       {loading && <LoaderParagraph />}
-      {!loading && (
-        <>
-          <h2 className="text-2xl font-semibold">Traducciones</h2>
-          <TranslationsList translations={arrayTranslation} />
-        </>
-      )}
+      {!loading && <TranslationsList translations={arrayTranslation} />}
     </>
   );
 };
