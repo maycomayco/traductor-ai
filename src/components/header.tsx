@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="border-b">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
-        <h1 className="text-xl font-bold">TraductorAI</h1>
+        <h1 className="text-3xl font-bold">TraductorAI</h1>
         <div className="flex items-center gap-4">
           <SignedOut>
             <SignInButton />

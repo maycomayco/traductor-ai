@@ -15,7 +15,10 @@ export default function TranslationsList({
   return (
     <div className="space-y-4">
       {translations.map((translation, idx) => (
-        <div key={idx + translation[0]} className="space-y-1 border-b">
+        <div
+          key={idx + translation[0]}
+          className="space-y-1 border-b last:border-0"
+        >
           <h3 className="text-left font-medium capitalize">{translation[0]}</h3>
           <p className="relative leading-relaxed text-neutral-700 pb-4">
             {translation[1]}

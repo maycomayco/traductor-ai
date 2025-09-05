@@ -65,23 +65,22 @@ export default function TranslationForm({
           name="query"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Texto a traducir</FormLabel>
               <FormControl>
                 <Textarea
-                  className="placeholder:text-xs"
+                  className="min-h-[120px] text-lg leading-relaxed border-slate-200 focus:border-slate-400 focus-visible:ring-slate-200 resize-y font-sans"
                   placeholder="Había una vez-truz..."
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                Intenta de que no sean demasiado largos, para que el modelo
-                pueda generar una traducción de calidad.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-32" disabled={loading}>
+        <Button
+          type="submit"
+          className="w-32 text-white font-medium"
+          disabled={loading}
+        >
           {loading ? "Traduciendo..." : "Traducir"}
         </Button>
       </form>

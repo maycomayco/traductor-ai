@@ -28,7 +28,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50`}
         >
           <div className="flex flex-col min-h-screen">
             <Header />
@@ -36,7 +36,7 @@ export default function RootLayout({
 
             <footer className="border-t py-4">
               <div className="container mx-auto px-4">
-                <p className="text-sm text-center text-muted-foreground">
+                <p className="text-sm text-center text-muted-foreground font-medium">
                   TraductorAI
                 </p>
               </div>

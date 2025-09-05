@@ -11,7 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <main className="flex-1 container mx-auto px-4 py-6">
+    <main className="flex-1 container px-4 py-6 max-w-4xl mx-auto">
       <div className="flex flex-col gap-8">
         <section>
           <TranslationForm
