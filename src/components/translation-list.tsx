@@ -19,12 +19,8 @@ export default function TranslationsList({
           key={idx + translation[0]}
           className="space-y-1 border-b last:border-0"
         >
-          <h3 className="text-left font-medium capitalize">{translation[0]}</h3>
-          <p className="relative leading-relaxed text-neutral-700 pb-4">
+          <p className="relative leading-relaxed text-neutral-800 pb-4 text-xl cursor-pointer" onClick={() => handleCopy(translation[1])}>
             {translation[1]}
-            <button className="ml-2" onClick={() => handleCopy(translation[1])}>
-              <FaCopy className="size-4 fill-neutral-600" />
-            </button>
           </p>
         </div>
       ))}

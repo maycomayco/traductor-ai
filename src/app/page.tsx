@@ -11,21 +11,18 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <main className="flex-1 container px-4 py-6 max-w-4xl mx-auto">
-      <div className="flex flex-col gap-8">
-        <section>
+    <main className="flex-1 container px-4 py-6 max-w-8xl mx-auto">
+      <div className="flex border border-gray-200 shadow-xs flex-col lg:flex-row">
+        <div className="flex-1 lg:border-r lg:border-b-0 border-b border-gray-200">
           <TranslationForm
             loading={loading}
             setLoading={setLoading}
             setTranslations={setTranslations}
           />
-        </section>
-
-        {translations && (
-          <section className="flex flex-col gap-6">
+        </div>
+        <div className="flex-1">
             <TranslationsResults translation={translations} loading={loading} />
-          </section>
-        )}
+        </div>
       </div>
     </main>
   );

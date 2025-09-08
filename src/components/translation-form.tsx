@@ -56,8 +56,9 @@ export default function TranslationForm({
     }
   }
   return (
+    <div className="p-8">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="query"
@@ -65,8 +66,8 @@ export default function TranslationForm({
             <FormItem>
               <FormControl>
                 <Textarea
-                  className="min-h-[120px] text-lg leading-relaxed border-slate-200 focus:border-slate-400 focus-visible:ring-slate-200 resize-y font-sans"
-                  placeholder="Había una vez-truz..."
+                  className="min-h-[120px] text-xl! leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
+                  placeholder="Type to translate..."
                   {...field}
                 />
               </FormControl>
@@ -76,12 +77,13 @@ export default function TranslationForm({
         />
         <Button
           type="submit"
-          className="w-32 text-white font-medium"
+          className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
           disabled={loading}
         >
           {loading ? "Traduciendo..." : "Traducir"}
         </Button>
       </form>
     </Form>
+    </div>
   );
 }
