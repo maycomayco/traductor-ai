@@ -1,5 +1,3 @@
-import { FaCopy } from "react-icons/fa";
-
 export default function TranslationsList({
   translations,
 }: {
