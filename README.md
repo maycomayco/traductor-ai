@@ -19,3 +19,4 @@ A powerful translation application that provides multiple translation proposals 
 - Submit form with cmd + Enter key
 - When mobile make the heights of the form and the results area equals
 - Run `knip` in the project
+- Add Biome
