@@ -1,28 +1,32 @@
 "use client";
-import { createTranslation } from "@/lib/services/open-ai";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import type { Translation } from "@/types";
 
-// este hook recibe como parámetro el texto a traducir
-export const useTranslationGPT = ({ query }: { query: string }) => {
-  const [translation, setTranslation] = useState({});
-  const [loading, setLoading] = useState(false);
-  const previousQuery = useRef(query); // con esto controlamos que no se vuelva a realizar la misma petición
-
-  const getTranslation = async () => {
-    if (query === previousQuery.current) return;
-
-    try {
-      setLoading(true);
-      previousQuery.current = query;
-      const response = await createTranslation({ query });
-
-      setTranslation(response);
-    } catch {
-      throw new Error("Error getting translations");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { translation, loading, getTranslation };
+/** Hook return type for translation state management */
+type UseTranslationReturn = {
+  /** Current translation data */
+  readonly translations: Translation | null;
+  /** Whether a translation request is in progress */
+  readonly loading: boolean;
+  /** Function to update the translations state */
+  readonly setTranslations: Dispatch<SetStateAction<Translation | null>>;
+  /** Function to update the loading state */
+  readonly setLoading: Dispatch<SetStateAction<boolean>>;
 };
+
+/**
+ * Custom hook to manage translation state and loading status.
+ * Centralizes state management for translation functionality.
+ */
+export function useTranslation(): UseTranslationReturn {
+  const [translations, setTranslations] = useState<Translation | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  return {
+    translations,
+    loading,
+    setTranslations,
+    setLoading,
+  } as const;
+}

@@ -1,3 +1,9 @@
+import type { Dispatch, SetStateAction } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { getTranslations } from "@/action/translation-action";
+import type { Translation } from "@/types";
 import {
   Form,
   FormControl,
@@ -7,83 +13,89 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { getTranslations } from "@/action/translation-action";
-import { type Translation } from "@/types";
-import { type Dispatch, type SetStateAction } from "react";
 
-// schema for the form
-const formSchema = z.object({
-  query: z.string().min(10).max(350),
+/** Schema for translation form validation */
+const translationFormSchema = z.object({
+  query: z.string().min(10, "El texto debe tener al menos 10 caracteres").max(350, "El texto no puede exceder 350 caracteres"),
 });
 
-export default function TranslationForm({
+type TranslationFormData = z.infer<typeof translationFormSchema>;
+
+type TranslationFormProps = {
+  /** Whether the form is currently submitting */
+  readonly loading: boolean;
+  readonly setLoading: Dispatch<SetStateAction<boolean>>;
+  readonly setTranslations: Dispatch<SetStateAction<Translation | null>>;
+};
+
+/**
+ * Form component for submitting text to be translated.
+ * Handles form validation, submission, and error states.
+ */
+export function TranslationForm({
   loading,
   setLoading,
   setTranslations,
-}: {
-  loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-  setTranslations: Dispatch<SetStateAction<Translation | null>>;
-}) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+}: TranslationFormProps) {
+  const form = useForm<TranslationFormData>({
+    resolver: zodResolver(translationFormSchema),
     defaultValues: {
       query: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Create a FormData object to send the query to the server
+  const handleSubmit = async (values: TranslationFormData): Promise<void> => {
     const formData = new FormData();
     formData.append("query", values.query);
 
     try {
       setLoading(true);
       const { error, success, translations } = await getTranslations(formData);
+      
       if (success && translations) {
         setTranslations(translations);
       } else {
-        // TODO: improve this error handling
-        console.log(error);
+        // TODO: Implement proper error handling
+        console.error("Translation error:", error);
       }
     } catch (error) {
-      console.log(error);
+      // TODO: Implement proper error handling
+      console.error("Unexpected error:", error);
     } finally {
       setLoading(false);
     }
-  }
+  };
+
   return (
     <div className="p-8">
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="query"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Textarea
-                  className="min-h-[120px] text-xl! leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
-                  placeholder="Type to translate..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type="submit"
-          className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
-          disabled={loading}
-        >
-          {loading ? "Traduciendo..." : "Traducir"}
-        </Button>
-      </form>
-    </Form>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="query"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    className="min-h-[120px] text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
+                    placeholder="Escribe el texto que quieres traducir..."
+                    disabled={loading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
+            disabled={loading || !form.formState.isValid}
+          >
+            {loading ? "Traduciendo..." : "Traducir"}
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
