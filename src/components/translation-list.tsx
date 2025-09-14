@@ -1,3 +1,5 @@
+import { toast } from "sonner"
+
 type TranslationsListProps = {
   /** Array of translation entries as key-value pairs */
   readonly translations: readonly [string, string][];
@@ -9,6 +11,7 @@ export function TranslationsList({ translations }: TranslationsListProps) {
   async function handleCopy(text: string): Promise<void> {
     try {
       await navigator.clipboard.writeText(text);
+      toast.success("Texto copiado al portapapeles")
     } catch (err) {
       console.error("Failed to copy: ", err);
     }

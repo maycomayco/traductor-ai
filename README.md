@@ -13,10 +13,13 @@ A powerful translation application that provides multiple translation proposals 
 
 ## TODO
 
-- Toast when the text has been copied
+- [x] Toast when the text has been copied
 - [x] Mobile UI
 - Appearance when focus elements
 - Submit form with cmd + Enter key
 - When mobile make the heights of the form and the results area equals
 - Run `knip` in the project
 - Add Biome
+- Refactor translation service
+- Make fluid the container width, from mobile to desktop
+- Refactor with v0
