@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ type TranslationFormProps = {
 /**
  * Form component for submitting text to be translated.
  * Handles form validation, submission, and error states.
+ * Supports keyboard shortcut (Cmd+Enter) for form submission.
  */
 export function TranslationForm({
   loading,
@@ -66,6 +68,27 @@ export function TranslationForm({
     }
   };
 
+  // Add keyboard shortcut for form submission
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === "Enter") {
+        event.preventDefault();
+        
+        // Only submit if form is valid and not loading
+        if (form.formState.isValid && !loading) {
+          const values = form.getValues();
+          handleSubmit(values);
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [form, loading]);
+
   return (
     <div className="p-8">
       <Form {...form}>
@@ -77,8 +100,8 @@ export function TranslationForm({
               <FormItem>
                 <FormControl>
                   <Textarea
-                    className="min-h-[120px] text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
-                    placeholder="Escribe el texto que quieres traducir..."
+                    className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
+                    placeholder="Escribe el texto que quieres traducir... (Cmd+Enter para traducir)"
                     disabled={loading}
                     {...field}
                   />
