@@ -16,7 +16,7 @@ A powerful translation application that provides multiple translation proposals 
 - [x] Toast when the text has been copied
 - [x] Mobile UI
 - [x] Submit form with cmd + Enter key
-- Run `knip` in the project
+- [x] Run `knip` in the project
 - Add Biome
 - Appearance when focus elements
 - Refactor translation service, investigate how to reduce tokens when sending data
