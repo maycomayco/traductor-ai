@@ -19,7 +19,7 @@ A powerful translation application that provides multiple translation proposals 
 - Run `knip` in the project
 - Add Biome
 - Appearance when focus elements
-- Refactor translation service
+- Refactor translation service, investigate how to reduce tokens when sending data
 - Make fluid the container width, from mobile to desktop
-- Refactor with v0
+- Refactor components individually with v0
 - When mobile make the heights of the form and the results area equals
