@@ -17,9 +17,10 @@ A powerful translation application that provides multiple translation proposals 
 - [x] Mobile UI
 - [x] Submit form with cmd + Enter key
 - [x] Run `knip` in the project
-- Add Biome
+- [x] Add Biome
 - Appearance when focus elements
 - Refactor translation service, investigate how to reduce tokens when sending data
 - Make fluid the container width, from mobile to desktop
 - Refactor components individually with v0
 - When mobile make the heights of the form and the results area equals
+- Check for ZOD implementations

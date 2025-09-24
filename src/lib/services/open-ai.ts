@@ -1,12 +1,16 @@
-import { type Translation } from "@/types";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import {
+  type ChatCompletionRequestMessage,
+  Configuration,
+  OpenAIApi,
+} from "openai"
+import type { Translation } from "@/types"
 
 // configure OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-});
+})
 
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAIApi(configuration)
 
 // training messages
 const trainingMessages: ChatCompletionRequestMessage[] = [
@@ -34,15 +38,15 @@ const trainingMessages: ChatCompletionRequestMessage[] = [
     content:
       '{"writing": "I\'m working on an application where I\'m learning Next.JS for my upcoming project!","speaking": "I\'m working on an app where I\'m learning Next.JS for my next project!","coloquial": "I\'m working on an app where I\'m picking up Next.JS for my upcoming project!"}',
   },
-];
+]
 
 type Props = {
-  query: string;
-};
+  query: string
+}
 
 export async function createTranslation({ query }: Props) {
   if (query === "") {
-    throw new Error("Query is empty");
+    throw new Error("Query is empty")
   }
 
   // TODO: estamos teniendo un error con axios y el user-agent, revisarlo ASAP
@@ -57,18 +61,18 @@ export async function createTranslation({ query }: Props) {
           content: query,
         },
       ],
-    });
+    })
     // aplicar transformacion de datos de la respuesta y validar que el objeto este formado correctamente
-    const responseContent = completion.data.choices[0]?.message?.content;
+    const responseContent = completion.data.choices[0]?.message?.content
 
     if (!responseContent) {
-      throw new Error("Response content is undefined");
+      throw new Error("Response content is undefined")
     }
 
-    const parsedResponse: Translation = JSON.parse(responseContent);
-    return parsedResponse;
+    const parsedResponse: Translation = JSON.parse(responseContent)
+    return parsedResponse
   } catch (error) {
-    console.log(error);
-    throw new Error("Error creating translations");
+    console.log(error)
+    throw new Error("Error creating translations")
   }
 }

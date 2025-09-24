@@ -1,13 +1,13 @@
-import { LoaderParagraph } from "@/components/loader-paragraph";
-import { TranslationsList } from "./translation-list";
-import type { Translation } from "@/types";
+import { LoaderParagraph } from "@/components/loader-paragraph"
+import type { Translation } from "@/types"
+import { TranslationsList } from "./translation-list"
 
 type TranslationsResultsProps = {
   /** Current translation object containing writing, speaking, and coloquial translations */
-  readonly translation: Translation | null;
+  readonly translation: Translation | null
   /** Whether the translation is currently being loaded */
-  readonly loading: boolean;
-};
+  readonly loading: boolean
+}
 
 /**
  * Component that displays translation results or loading state.
@@ -18,16 +18,20 @@ export function TranslationsResults({
   loading,
 }: TranslationsResultsProps) {
   /** Convert translation object to array format expected by TranslationsList */
-  function getTranslationEntries(translation: Translation): readonly [string, string][] {
-    return Object.entries(translation) as readonly [string, string][];
+  function getTranslationEntries(
+    translation: Translation,
+  ): readonly [string, string][] {
+    return Object.entries(translation) as readonly [string, string][]
   }
 
-  const translationEntries = translation ? getTranslationEntries(translation) : [];
+  const translationEntries = translation
+    ? getTranslationEntries(translation)
+    : []
 
   return (
     <div className="px-8 pt-8 min-h-54">
       {loading && <LoaderParagraph />}
       {!loading && <TranslationsList translations={translationEntries} />}
     </div>
-  );
+  )
 }

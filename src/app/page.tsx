@@ -1,15 +1,16 @@
-"use client";
+"use client"
 
-import { TranslationsResults } from "@/components/translation-results";
-import { TranslationForm } from "@/components/translation-form";
-import { useTranslation } from "@/hooks/useTranslation";
+import { TranslationForm } from "@/components/translation-form"
+import { TranslationsResults } from "@/components/translation-results"
+import { useTranslation } from "@/hooks/useTranslation"
 
 /**
  * Home page component that serves as the container for the translation application.
  * Manages the overall application state and renders the translation interface.
  */
 export default function Home() {
-  const { translations, loading, setTranslations, setLoading } = useTranslation();
+  const { translations, loading, setTranslations, setLoading } =
+    useTranslation()
 
   return (
     <main className="flex-1 container px-4 py-6 max-w-8xl mx-auto">
@@ -26,5 +27,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  );
+  )
 }

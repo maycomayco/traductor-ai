@@ -1,33 +1,36 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useEffect } from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { getTranslations } from "@/action/translation-action";
-import type { Translation } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Dispatch, SetStateAction } from "react"
+import { useCallback, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { getTranslations } from "@/action/translation-action"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import type { Translation } from "@/types"
 
 /** Schema for translation form validation */
 const translationFormSchema = z.object({
-  query: z.string().min(10, "El texto debe tener al menos 10 caracteres").max(350, "El texto no puede exceder 350 caracteres"),
-});
+  query: z
+    .string()
+    .min(10, "El texto debe tener al menos 10 caracteres")
+    .max(350, "El texto no puede exceder 350 caracteres"),
+})
 
-type TranslationFormData = z.infer<typeof translationFormSchema>;
+type TranslationFormData = z.infer<typeof translationFormSchema>
 
 type TranslationFormProps = {
   /** Whether the form is currently submitting */
-  readonly loading: boolean;
-  readonly setLoading: Dispatch<SetStateAction<boolean>>;
-  readonly setTranslations: Dispatch<SetStateAction<Translation | null>>;
-};
+  readonly loading: boolean
+  readonly setLoading: Dispatch<SetStateAction<boolean>>
+  readonly setTranslations: Dispatch<SetStateAction<Translation | null>>
+}
 
 /**
  * Form component for submitting text to be translated.
@@ -44,50 +47,53 @@ export function TranslationForm({
     defaultValues: {
       query: "",
     },
-  });
+  })
 
-  const handleSubmit = async (values: TranslationFormData): Promise<void> => {
-    const formData = new FormData();
-    formData.append("query", values.query);
+  const handleSubmit = useCallback(
+    async (values: TranslationFormData) => {
+      const formData = new FormData()
+      formData.append("query", values.query)
 
-    try {
-      setLoading(true);
-      const { error, success, translations } = await getTranslations(formData);
-      
-      if (success && translations) {
-        setTranslations(translations);
-      } else {
+      try {
+        setLoading(true)
+        const { error, success, translations } = await getTranslations(formData)
+
+        if (success && translations) {
+          setTranslations(translations)
+        } else {
+          // TODO: Implement proper error handling
+          console.error("Translation error:", error)
+        }
+      } catch (error) {
         // TODO: Implement proper error handling
-        console.error("Translation error:", error);
+        console.error("Unexpected error:", error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      // TODO: Implement proper error handling
-      console.error("Unexpected error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [setLoading, setTranslations],
+  )
 
   // Add keyboard shortcut for form submission
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey && event.key === "Enter") {
-        event.preventDefault();
-        
+        event.preventDefault()
+
         // Only submit if form is valid and not loading
         if (form.formState.isValid && !loading) {
-          const values = form.getValues();
-          handleSubmit(values);
+          const values = form.getValues()
+          handleSubmit(values)
         }
       }
-    };
+    }
 
-    document.addEventListener("keydown", handleKeyDown);
-    
+    document.addEventListener("keydown", handleKeyDown)
+
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [form, loading]);
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [form, loading, handleSubmit])
 
   return (
     <div className="p-8">
@@ -120,5 +126,5 @@ export function TranslationForm({
         </form>
       </Form>
     </div>
-  );
+  )
 }

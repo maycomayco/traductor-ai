@@ -121,8 +121,8 @@
   }
 }
 
-@layer utilities{
-    .debug{
-        @apply border border-red-500;
-    }
+@layer utilities {
+  .debug {
+    @apply border border-red-500;
+  }
 }
