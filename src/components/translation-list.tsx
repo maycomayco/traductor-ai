@@ -22,10 +22,10 @@ export function TranslationsList({ translations }: TranslationsListProps) {
       {translations.map((translation, idx) => (
         <div
           key={idx + translation[0]}
-          className="space-y-1 border-b last:border-0"
+          className="space-y-1 border-b last:border-b-0"
         >
           <p
-            className="relative leading-relaxed text-neutral-800 text-xl cursor-pointer"
+            className="relative leading-relaxed text-neutral-800 text-xl cursor-pointer pb-4"
             onClick={() => handleCopy(translation[1])}
           >
             {translation[1]}

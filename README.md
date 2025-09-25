@@ -24,3 +24,4 @@ A powerful translation application that provides multiple translation proposals 
 - Refactor components individually with v0
 - When mobile make the heights of the form and the results area equals
 - Check for ZOD implementations
+- Align translations results divider
