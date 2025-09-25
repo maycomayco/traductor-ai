@@ -25,7 +25,7 @@ export function TranslationsList({ translations }: TranslationsListProps) {
           className="space-y-1 border-b last:border-0"
         >
           <p
-            className="relative leading-relaxed text-neutral-800 pb-4 text-xl cursor-pointer"
+            className="relative leading-relaxed text-neutral-800 text-xl cursor-pointer"
             onClick={() => handleCopy(translation[1])}
           >
             {translation[1]}
