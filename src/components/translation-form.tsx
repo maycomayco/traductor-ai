@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Dispatch, SetStateAction } from "react"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { getTranslations } from "@/action/translation-action"
@@ -30,6 +30,8 @@ type TranslationFormProps = {
   readonly loading: boolean
   readonly setLoading: Dispatch<SetStateAction<boolean>>
   readonly setTranslations: Dispatch<SetStateAction<Translation | null>>
+  /** Callback to notify parent when form area is clicked */
+  readonly onFormAreaClick?: (clicked: boolean) => void
 }
 
 /**
@@ -41,13 +43,33 @@ export function TranslationForm({
   loading,
   setLoading,
   setTranslations,
+  onFormAreaClick,
 }: TranslationFormProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const formAreaRef = useRef<HTMLDivElement>(null)
+
   const form = useForm<TranslationFormData>({
     resolver: zodResolver(translationFormSchema),
     defaultValues: {
       query: "",
     },
   })
+
+  const handleFormAreaClick = useCallback((): void => {
+    onFormAreaClick?.(true)
+    // Automatically focus the textarea when clicking anywhere in the form area
+    textareaRef.current?.focus()
+  }, [onFormAreaClick])
+
+  const handleFormAreaBlur = useCallback(
+    (event: React.FocusEvent): void => {
+      // Only trigger blur if focus is moving outside the form area
+      if (!formAreaRef.current?.contains(event.relatedTarget as Node)) {
+        onFormAreaClick?.(false)
+      }
+    },
+    [onFormAreaClick],
+  )
 
   const handleSubmit = useCallback(
     async (values: TranslationFormData) => {
@@ -96,7 +118,13 @@ export function TranslationForm({
   }, [form, loading, handleSubmit])
 
   return (
-    <div className="p-8">
+    <div
+      className="p-8"
+      ref={formAreaRef}
+      onClick={handleFormAreaClick}
+      onBlur={handleFormAreaBlur}
+      tabIndex={-1}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
@@ -109,7 +137,14 @@ export function TranslationForm({
                     className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
                     placeholder="Escribe el texto que quieres traducir... (Cmd+Enter para traducir)"
                     disabled={loading}
-                    {...field}
+                    ref={(el) => {
+                      textareaRef.current = el
+                      field.ref(el)
+                    }}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
