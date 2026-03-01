@@ -1,41 +1,52 @@
 "use server"
 
+import { auth } from "@clerk/nextjs/server"
 import { createTranslation } from "@/lib/services/open-ai"
 import type { Translation } from "@/types"
 
 type TranslationResponse = {
-  success: boolean
-  error: string | null
-  translations: Translation | null
+    success: boolean
+    error: string | null
+    translations: Translation | null
 }
 
 export async function getTranslations(
-  formData: FormData,
+    formData: FormData,
 ): Promise<TranslationResponse> {
-  try {
-    const query = formData.get("query") as string
+    const { userId } = await auth()
 
-    if (!query || query.trim() === "") {
-      return {
-        success: false,
-        error: "El texto no puede estar vacío",
-        translations: null,
-      }
+    if (!userId) {
+        return {
+            success: false,
+            error: "No autorizado",
+            translations: null,
+        }
     }
 
-    const translations = await createTranslation({ query: query })
+    try {
+        const query = formData.get("query") as string
 
-    return {
-      success: true,
-      translations,
-      error: null,
+        if (!query || query.trim() === "") {
+            return {
+                success: false,
+                error: "El texto no puede estar vacío",
+                translations: null,
+            }
+        }
+
+        const translations = await createTranslation({ query: query })
+
+        return {
+            success: true,
+            translations,
+            error: null,
+        }
+    } catch (error) {
+        console.error("Error en la traducción:", error)
+        return {
+            success: false,
+            error: "Ocurrió un error al procesar la traducción",
+            translations: null,
+        }
     }
-  } catch (error) {
-    console.error("Error en la traducción:", error)
-    return {
-      success: false,
-      error: "Ocurrió un error al procesar la traducción",
-      translations: null,
-    }
-  }
 }

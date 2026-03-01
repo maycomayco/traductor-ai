@@ -8,6 +8,8 @@ type TranslationsResultsProps = {
   readonly translation: Translation | null
   /** Whether the translation is currently being loaded */
   readonly loading: boolean
+  /** Error message from the last failed translation, null if no error */
+  readonly error: string | null
   /** Callback to notify parent when results area is focused/blurred */
   readonly onResultsAreaFocus?: (focused: boolean) => void
 }
@@ -20,7 +22,7 @@ type TranslationsResultsProps = {
 export const TranslationsResults = forwardRef<
   HTMLDivElement,
   TranslationsResultsProps
->(function TranslationsResults({ translation, loading, onResultsAreaFocus }, ref) {
+>(function TranslationsResults({ translation, loading, error, onResultsAreaFocus }, ref) {
   /** Convert translation object to array format expected by TranslationsList */
   function getTranslationEntries(
     translation: Translation,
@@ -56,7 +58,10 @@ export const TranslationsResults = forwardRef<
       onBlur={handleResultsAreaBlur}
     >
       {loading && <LoaderParagraph />}
-      {!loading && <TranslationsList translations={translationEntries} />}
+      {!loading && error && (
+        <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
+      )}
+      {!loading && !error && <TranslationsList translations={translationEntries} />}
     </div>
   )
 })

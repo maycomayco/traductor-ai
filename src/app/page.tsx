@@ -10,7 +10,7 @@ import { useTranslation } from "@/hooks/useTranslation"
  * Manages the overall application state and renders the translation interface.
  */
 export default function Home() {
-  const { translations, loading, setTranslations, setLoading } =
+  const { translations, loading, error, setTranslations, setLoading, setError } =
     useTranslation()
   const [isFormAreaClicked, setIsFormAreaClicked] = useState(false)
   const [isResultsAreaFocused, setIsResultsAreaFocused] = useState(false)
@@ -30,6 +30,7 @@ export default function Home() {
             loading={loading}
             setLoading={setLoading}
             setTranslations={setTranslations}
+            setError={setError}
             onFormAreaClick={setIsFormAreaClicked}
           />
         </div>
@@ -40,10 +41,11 @@ export default function Home() {
               : ""
           }`}
         >
-          <TranslationsResults 
+          <TranslationsResults
             ref={resultsRef}
-            translation={translations} 
+            translation={translations}
             loading={loading}
+            error={error}
             onResultsAreaFocus={setIsResultsAreaFocused}
           />
         </div>
