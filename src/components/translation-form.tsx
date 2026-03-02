@@ -145,7 +145,7 @@ export function TranslationForm({
                                 <FormLabel className="sr-only">Texto a traducir</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
+                                        className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-2 focus-visible:ring-neutral-400 font-sans p-0 resize-none"
                                         placeholder="Escribe el texto que quieres traducir... (Cmd+Enter para traducir)"
                                         disabled={loading}
                                         ref={(el) => {
