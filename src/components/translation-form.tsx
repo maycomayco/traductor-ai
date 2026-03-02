@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Dispatch, SetStateAction } from "react"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -11,6 +11,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
@@ -105,26 +106,15 @@ export function TranslationForm({
         [setLoading, setTranslations, setError],
     )
 
-    // Add keyboard shortcut for form submission
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.metaKey && event.key === "Enter") {
-                event.preventDefault()
-
-                // Only submit if form is valid and not loading
-                if (form.formState.isValid && !loading) {
-                    const values = form.getValues()
-                    handleSubmit(values)
-                }
+    const handleTextareaKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+            if (e.metaKey && e.key === "Enter" && form.formState.isValid && !loading) {
+                e.preventDefault()
+                form.handleSubmit(handleSubmit)()
             }
-        }
-
-        document.addEventListener("keydown", handleKeyDown)
-
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown)
-        }
-    }, [form, loading, handleSubmit])
+        },
+        [form, loading, handleSubmit],
+    )
 
     return (
         <div
@@ -141,15 +131,17 @@ export function TranslationForm({
                         name="query"
                         render={({ field }) => (
                             <FormItem>
+                                <FormLabel className="sr-only">Texto a traducir</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
+                                        className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-2 focus-visible:ring-neutral-400 font-sans p-0 resize-none"
                                         placeholder="Escribe el texto que quieres traducir... (Cmd+Enter para traducir)"
                                         disabled={loading}
                                         ref={(el) => {
                                             textareaRef.current = el
                                             field.ref(el)
                                         }}
+                                        onKeyDown={handleTextareaKeyDown}
                                         onBlur={field.onBlur}
                                         name={field.name}
                                         value={field.value}
@@ -165,7 +157,7 @@ export function TranslationForm({
                         className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
                         disabled={loading || !form.formState.isValid}
                     >
-                        {loading ? "Traduciendo..." : "Traducir"}
+                        {loading ? "Traduciendo…" : "Traducir"}
                     </Button>
                 </form>
             </Form>
