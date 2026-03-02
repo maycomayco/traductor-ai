@@ -11,6 +11,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
@@ -141,6 +142,7 @@ export function TranslationForm({
                         name="query"
                         render={({ field }) => (
                             <FormItem>
+                                <FormLabel className="sr-only">Texto a traducir</FormLabel>
                                 <FormControl>
                                     <Textarea
                                         className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-slate-200 font-sans focus:border-0 focus:ring-0 focus-visible:ring-0 p-0 resize-none"
