@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Dispatch, SetStateAction } from "react"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -106,26 +106,15 @@ export function TranslationForm({
         [setLoading, setTranslations, setError],
     )
 
-    // Add keyboard shortcut for form submission
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.metaKey && event.key === "Enter") {
-                event.preventDefault()
-
-                // Only submit if form is valid and not loading
-                if (form.formState.isValid && !loading) {
-                    const values = form.getValues()
-                    handleSubmit(values)
-                }
+    const handleTextareaKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+            if (e.metaKey && e.key === "Enter" && form.formState.isValid && !loading) {
+                e.preventDefault()
+                form.handleSubmit(handleSubmit)()
             }
-        }
-
-        document.addEventListener("keydown", handleKeyDown)
-
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown)
-        }
-    }, [form, loading, handleSubmit])
+        },
+        [form, loading, handleSubmit],
+    )
 
     return (
         <div
@@ -152,6 +141,7 @@ export function TranslationForm({
                                             textareaRef.current = el
                                             field.ref(el)
                                         }}
+                                        onKeyDown={handleTextareaKeyDown}
                                         onBlur={field.onBlur}
                                         name={field.name}
                                         value={field.value}
