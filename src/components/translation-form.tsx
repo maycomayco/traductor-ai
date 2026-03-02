@@ -157,7 +157,7 @@ export function TranslationForm({
                         className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
                         disabled={loading || !form.formState.isValid}
                     >
-                        {loading ? "Traduciendo..." : "Traducir"}
+                        {loading ? "Traduciendo…" : "Traducir"}
                     </Button>
                 </form>
             </Form>
