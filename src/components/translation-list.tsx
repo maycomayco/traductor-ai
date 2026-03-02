@@ -1,3 +1,4 @@
+import { Copy } from "lucide-react"
 import { toast } from "sonner"
 
 type TranslationsListProps = {
@@ -24,12 +25,19 @@ export function TranslationsList({ translations }: TranslationsListProps) {
           key={idx + translation[0]}
           className="space-y-1 border-b last:border-b-0"
         >
-          <p
-            className="relative leading-relaxed text-neutral-800 text-xl cursor-pointer pb-4"
+          <button
+            type="button"
+            className="group relative w-full text-left leading-relaxed text-neutral-800 text-xl cursor-pointer pb-4 focus-visible:outline-2 focus-visible:outline-neutral-400 focus-visible:outline-offset-2"
             onClick={() => handleCopy(translation[1])}
+            aria-label={`Copiar traducción: ${translation[1]}`}
           >
             {translation[1]}
-          </p>
+            <Copy
+              size={16}
+              className="absolute top-1 right-0 text-neutral-400 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"
+              aria-hidden="true"
+            />
+          </button>
         </div>
       ))}
     </div>
