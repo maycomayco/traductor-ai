@@ -50,12 +50,14 @@ export const TranslationsResults = forwardRef<
     : []
 
   return (
-    <div 
+    <div
       ref={ref}
       className="px-8 pt-8 min-h-54"
       tabIndex={-1}
       onFocus={handleResultsAreaFocus}
       onBlur={handleResultsAreaBlur}
+      aria-live="polite"
+      aria-atomic="true"
     >
       {loading && <LoaderParagraph />}
       {!loading && error && (
