@@ -20,9 +20,9 @@ export default function Home() {
     <main className="flex-1 container px-4 py-6 max-w-8xl mx-auto">
       <div className="flex border border-gray-200 shadow-xs flex-col lg:flex-row">
         <div 
-          className={`flex-1 lg:border-r lg:border-b-0 border-b border-gray-200 transition-discrete duration-200 ${
+          className={`flex-1 lg:border-r lg:border-b-0 border-b border-gray-200 transition-[box-shadow] duration-200 ${
             isFormAreaClicked 
-              ? "ring-2 ring-blue-200 ring-opacity-50" 
+              ? "ring-2 ring-blue-200/50" 
               : ""
           }`}
         >
@@ -35,9 +35,9 @@ export default function Home() {
           />
         </div>
         <div 
-          className={`flex-1 transition-discrete duration-200 ${
+          className={`flex-1 transition-[box-shadow] duration-200 ${
             isResultsAreaFocused 
-              ? "ring-2 ring-blue-200 ring-opacity-50" 
+              ? "ring-2 ring-blue-200/50" 
               : ""
           }`}
         >
