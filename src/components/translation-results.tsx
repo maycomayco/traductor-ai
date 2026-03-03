@@ -49,6 +49,13 @@ export const TranslationsResults = forwardRef<
     ? getTranslationEntries(translation)
     : []
 
+  /** Renders loading state, error message, or translation results based on current state */
+  function renderContent() {
+    if (loading) return <LoaderParagraph />
+    if (error) return <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
+    return <TranslationsList translations={translationEntries} />
+  }
+
   return (
     <div
       ref={ref}
@@ -59,11 +66,7 @@ export const TranslationsResults = forwardRef<
       aria-live="polite"
       aria-atomic="true"
     >
-      {loading && <LoaderParagraph />}
-      {!loading && error && (
-        <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
-      )}
-      {!loading && !error && <TranslationsList translations={translationEntries} />}
+      {renderContent()}
     </div>
   )
 })
