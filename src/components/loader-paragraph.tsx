@@ -15,7 +15,7 @@ export function LoaderParagraph({
 }: LoaderParagraphProps) {
   return (
     <div
-      className="flex animate-pulse flex-col gap-4"
+      className="flex motion-safe:animate-pulse flex-col gap-4"
       role="status"
       aria-label="Cargando contenido de traducción"
     >

@@ -14,6 +14,13 @@ type TranslationsResultsProps = {
   readonly onResultsAreaFocus?: (focused: boolean) => void
 }
 
+/** Convert translation object to array format expected by TranslationsList */
+function getTranslationEntries(
+  translation: Translation,
+): readonly [string, string][] {
+  return Object.entries(translation) as readonly [string, string][]
+}
+
 /**
  * Component that displays translation results or loading state.
  * Shows a loader while translating and the translation list when complete.
@@ -23,13 +30,6 @@ export const TranslationsResults = forwardRef<
   HTMLDivElement,
   TranslationsResultsProps
 >(function TranslationsResults({ translation, loading, error, onResultsAreaFocus }, ref) {
-  /** Convert translation object to array format expected by TranslationsList */
-  function getTranslationEntries(
-    translation: Translation,
-  ): readonly [string, string][] {
-    return Object.entries(translation) as readonly [string, string][]
-  }
-
   const handleResultsAreaFocus = useCallback((): void => {
     onResultsAreaFocus?.(true)
   }, [onResultsAreaFocus])
@@ -49,6 +49,13 @@ export const TranslationsResults = forwardRef<
     ? getTranslationEntries(translation)
     : []
 
+  /** Renders loading state, error message, or translation results based on current state */
+  function renderContent() {
+    if (loading) return <LoaderParagraph />
+    if (error) return <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
+    return <TranslationsList translations={translationEntries} />
+  }
+
   return (
     <div
       ref={ref}
@@ -59,11 +66,7 @@ export const TranslationsResults = forwardRef<
       aria-live="polite"
       aria-atomic="true"
     >
-      {loading && <LoaderParagraph />}
-      {!loading && error && (
-        <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
-      )}
-      {!loading && !error && <TranslationsList translations={translationEntries} />}
+      {renderContent()}
     </div>
   )
 })
