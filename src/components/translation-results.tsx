@@ -14,6 +14,13 @@ type TranslationsResultsProps = {
   readonly onResultsAreaFocus?: (focused: boolean) => void
 }
 
+/** Convert translation object to array format expected by TranslationsList */
+function getTranslationEntries(
+  translation: Translation,
+): readonly [string, string][] {
+  return Object.entries(translation) as readonly [string, string][]
+}
+
 /**
  * Component that displays translation results or loading state.
  * Shows a loader while translating and the translation list when complete.
@@ -23,13 +30,6 @@ export const TranslationsResults = forwardRef<
   HTMLDivElement,
   TranslationsResultsProps
 >(function TranslationsResults({ translation, loading, error, onResultsAreaFocus }, ref) {
-  /** Convert translation object to array format expected by TranslationsList */
-  function getTranslationEntries(
-    translation: Translation,
-  ): readonly [string, string][] {
-    return Object.entries(translation) as readonly [string, string][]
-  }
-
   const handleResultsAreaFocus = useCallback((): void => {
     onResultsAreaFocus?.(true)
   }, [onResultsAreaFocus])
