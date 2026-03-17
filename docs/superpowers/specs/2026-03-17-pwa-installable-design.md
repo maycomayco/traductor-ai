@@ -15,6 +15,8 @@ Permitir que TraductorAI sea instalable en el home screen de dispositivos móvil
 Manifest generado con el tipo built-in `MetadataRoute.Manifest` de Next.js. Next.js auto-registra el manifest en el `<head>` cuando este archivo existe.
 
 ```ts
+import type { MetadataRoute } from 'next'
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'TraductorAI',
@@ -23,7 +25,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
-    theme_color: '#333333',
+    theme_color: '#171717',
     icons: [
       { src: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
       { src: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
@@ -34,7 +36,7 @@ export default function manifest(): MetadataRoute.Manifest {
 
 Colores derivados del esquema actual:
 - `background_color: #ffffff` ← `--background: oklch(1 0 0)`
-- `theme_color: #333333` ← `--primary: oklch(0.205 0 0)`
+- `theme_color: #171717` ← `--primary: oklch(0.205 0 0)` (conversión exacta a sRGB)
 
 ### `public/sw.js`
 
@@ -49,11 +51,23 @@ Service worker vacío. Su única función es satisfacer el requisito de Chrome p
 
 ### `src/components/service-worker-register.tsx`
 
-Client component que registra el SW una vez que el DOM está listo. Se monta en el root layout.
+Client component que registra el SW una vez que el DOM está listo. Se monta en el root layout. No expone UI — es invisible para el usuario.
 
-- Usa `useEffect` con array vacío (una sola ejecución)
-- Verifica soporte con `'serviceWorker' in navigator` antes de registrar
-- No expone UI — es invisible para el usuario
+```tsx
+'use client'
+
+import { useEffect } from 'react'
+
+export function ServiceWorkerRegister() {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+    }
+  }, [])
+
+  return null
+}
+```
 
 ### Íconos
 
@@ -70,13 +84,18 @@ Agregar `<ServiceWorkerRegister />` dentro del `<body>`. Al ser un client compon
 Agregar security headers específicos para `/sw.js`:
 
 ```ts
-{
-  source: '/sw.js',
-  headers: [
-    { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
-    { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
-  ],
-}
+// En next.config.ts, dentro del objeto NextConfig:
+async headers() {
+  return [
+    {
+      source: '/sw.js',
+      headers: [
+        { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
+        { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+      ],
+    },
+  ]
+},
 ```
 
 `Cache-Control: no-cache` garantiza que el browser siempre busque la versión más reciente del SW en cada deploy.
@@ -87,6 +106,7 @@ Agregar security headers específicos para `/sw.js`:
 - Sin push notifications
 - Sin `beforeinstallprompt` personalizado (no es cross-browser)
 - Sin `InstallPrompt` component (iOS puede instalarlo vía share sheet)
+- Sin ícono `maskable` (Lighthouse lo marcaría como warning, pero no bloquea la instalación — fuera de scope)
 
 ## Criterios de éxito
 
