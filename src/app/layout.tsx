@@ -1,18 +1,26 @@
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Barlow, Bebas_Neue, IBM_Plex_Mono } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/header"
 import { ServiceWorkerRegister } from "@/components/service-worker-register"
 import { Toaster } from "@/components/ui/sonner"
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
+const bebasNeue = Bebas_Neue({
+    weight: "400",
+    variable: "--font-bebas",
     subsets: ["latin"],
 })
 
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+    weight: ["400", "700"],
+    variable: "--font-mono",
+    subsets: ["latin"],
+})
+
+const barlow = Barlow({
+    weight: ["400", "700", "900"],
+    variable: "--font-sans",
     subsets: ["latin"],
 })
 
@@ -30,18 +38,19 @@ export default function RootLayout({
         <ClerkProvider>
             <html lang="es">
                 <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50`}
+                    className={`${bebasNeue.variable} ${ibmPlexMono.variable} ${barlow.variable} antialiased`}
                 >
                     <div className="flex flex-col min-h-screen">
                         <Header />
                         {children}
 
-                        <footer className="border-t py-4">
-                            <div className="container mx-auto px-4">
-                                <p className="text-sm text-center text-muted-foreground font-medium">
-                                    TraductorAI
-                                </p>
-                            </div>
+                        <footer className="border-t-2 bg-[#1a1a1a] py-3 px-8 flex items-center justify-between text-white">
+                            <span className="font-mono text-[9px] font-bold tracking-[3px] uppercase opacity-30">
+                                TraductorAI
+                            </span>
+                            <span className="font-mono text-[9px] tracking-[1px] opacity-30">
+                                powered by OPENAI
+                            </span>
                         </footer>
                     </div>
 

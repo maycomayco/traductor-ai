@@ -4,28 +4,18 @@ import type { Translation } from "@/types"
 import { TranslationsList } from "./translation-list"
 
 type TranslationsResultsProps = {
-  /** Current translation object containing writing, speaking, and coloquial translations */
   readonly translation: Translation | null
-  /** Whether the translation is currently being loaded */
   readonly loading: boolean
-  /** Error message from the last failed translation, null if no error */
   readonly error: string | null
-  /** Callback to notify parent when results area is focused/blurred */
   readonly onResultsAreaFocus?: (focused: boolean) => void
 }
 
-/** Convert translation object to array format expected by TranslationsList */
 function getTranslationEntries(
   translation: Translation,
 ): readonly [string, string][] {
   return Object.entries(translation) as readonly [string, string][]
 }
 
-/**
- * Component that displays translation results or loading state.
- * Shows a loader while translating and the translation list when complete.
- * Forwards ref to the main container div for focus detection.
- */
 export const TranslationsResults = forwardRef<
   HTMLDivElement,
   TranslationsResultsProps
@@ -36,7 +26,6 @@ export const TranslationsResults = forwardRef<
 
   const handleResultsAreaBlur = useCallback(
     (event: React.FocusEvent): void => {
-      // Only trigger blur if focus is moving outside the results area
       const currentTarget = event.currentTarget as HTMLElement
       if (!currentTarget.contains(event.relatedTarget as Node)) {
         onResultsAreaFocus?.(false)
@@ -45,27 +34,36 @@ export const TranslationsResults = forwardRef<
     [onResultsAreaFocus],
   )
 
-  const translationEntries = translation
-    ? getTranslationEntries(translation)
-    : []
+  const translationEntries = translation ? getTranslationEntries(translation) : []
 
-  /** Renders loading state, error message, or translation results based on current state */
   function renderContent() {
     if (loading) return <LoaderParagraph />
-    if (error) return <p className="text-sm text-red-500">No se pudo completar la traducción. Intenta de nuevo.</p>
+    if (error) return (
+      <p className="font-mono text-[11px] tracking-[1px] text-[#cc3300]">
+        No se pudo completar la traducción. Intenta de nuevo.
+      </p>
+    )
     return <TranslationsList translations={translationEntries} />
   }
 
   return (
     <div
       ref={ref}
-      className="px-8 pt-8 min-h-54"
+      className="p-8 flex flex-col gap-5 min-h-54"
       tabIndex={-1}
       onFocus={handleResultsAreaFocus}
       onBlur={handleResultsAreaBlur}
       aria-live="polite"
       aria-atomic="true"
     >
+      {/* Panel label */}
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-[10px] font-bold tracking-[3px] uppercase text-[#1a1a1a] shrink-0">
+          ← Inglés
+        </span>
+        <div className="flex-1 h-px bg-[#1a1a1a] opacity-20" />
+      </div>
+
       {renderContent()}
     </div>
   )
