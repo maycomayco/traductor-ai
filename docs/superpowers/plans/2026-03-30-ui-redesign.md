@@ -25,6 +25,16 @@
 
 ---
 
+## Setup: Create Feature Branch
+
+- [ ] **Create and switch to a new branch**
+
+```bash
+git checkout -b feat/ui-redesign-brutalist
+```
+
+---
+
 ## Task 1: Fonts and CSS Variables
 
 **Files:**
@@ -200,13 +210,6 @@ pnpm build
 
 Expected: Build succeeds with no TypeScript errors. If font names are wrong, Next.js will error — `Bebas_Neue`, `IBM_Plex_Mono`, `Barlow` are the correct `next/font/google` export names.
 
-- [ ] **Step 4: Commit**
-
-```bash
-git add src/app/globals.css src/app/layout.tsx
-git commit -m "feat: brutalist design tokens — beige palette, zero-radius, Bebas/Mono/Barlow fonts"
-```
-
 ---
 
 ## Task 2: Header
@@ -251,20 +254,13 @@ export default function Header() {
 }
 ```
 
-- [ ] **Step 2: Start dev server and verify header renders**
+- [ ] **Step 2: Verify header in browser**
 
 ```bash
 pnpm dev
 ```
 
 Open http://localhost:3000. Expected: Black header with `TraductorAI` in Bebas Neue, "AI" in blue, beige page background.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/components/header.tsx
-git commit -m "feat: brutalist header — black bg, Bebas Neue logo, blue AI accent"
-```
 
 ---
 
@@ -321,14 +317,7 @@ export default function Home() {
 
 - [ ] **Step 2: Verify layout in browser**
 
-With `pnpm dev` running, open http://localhost:3000. Expected: Two panels side-by-side on desktop, separated by a hard 2px black border. No shadow, no soft ring. Fills full height.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/app/page.tsx
-git commit -m "feat: brutalist page layout — full-width split, hard borders, no focus rings"
-```
+Open http://localhost:3000. Expected: Two panels side-by-side on desktop, separated by a hard 2px black border. No shadow, no soft ring. Fills full height.
 
 ---
 
@@ -514,14 +503,7 @@ export function TranslationForm({
 
 - [ ] **Step 2: Verify in browser**
 
-With `pnpm dev` running, open http://localhost:3000. Expected: Left panel shows `ESPAÑOL →` label, white textarea with hard border, blue button with `⌘ + ↵`, character counter bottom-right of textarea, hint text below button.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/components/translation-form.tsx
-git commit -m "feat: brutalist translation form — panel label, hard-border textarea, char counter"
-```
+Open http://localhost:3000. Expected: Left panel shows `ESPAÑOL →` label, white textarea with hard border, blue button with `⌘ + ↵`, character counter bottom-right of textarea, hint text below button.
 
 ---
 
@@ -610,13 +592,6 @@ export const TranslationsResults = forwardRef<
 - [ ] **Step 2: Verify in browser**
 
 Open http://localhost:3000. Expected: Right panel shows `← INGLÉS` label aligned with the left panel's label.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/components/translation-results.tsx
-git commit -m "feat: brutalist results panel — panel label, consistent padding"
-```
 
 ---
 
@@ -707,13 +682,6 @@ export function TranslationsList({ translations }: TranslationsListProps) {
 
 Open http://localhost:3000, type at least 10 characters, click Traducir. Expected: Three cards appear — Writing and Speaking with white bg + black border, Coloquial with blue bg + white bold text. Each card has a label tag and `[ copiar ]` button.
 
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/components/translation-list.tsx
-git commit -m "feat: brutalist result cards — coloquial blue card, monospace copy button"
-```
-
 ---
 
 ## Task 7: Loader Skeleton
@@ -776,10 +744,3 @@ pnpm build
 ```
 
 Expected: Clean build with no errors.
-
-- [ ] **Step 4: Commit**
-
-```bash
-git add src/components/loader-paragraph.tsx
-git commit -m "feat: brutalist loader skeleton — card-shaped with beige placeholder bars"
-```
