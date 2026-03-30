@@ -5,19 +5,15 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { getTranslations } from "@/action/translation-action"
-import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
 import type { Translation } from "@/types"
 
-/** Schema for translation form validation */
 const translationFormSchema = z.object({
     query: z
         .string()
@@ -28,20 +24,13 @@ const translationFormSchema = z.object({
 type TranslationFormData = z.infer<typeof translationFormSchema>
 
 type TranslationFormProps = {
-    /** Whether the form is currently submitting */
     readonly loading: boolean
     readonly setLoading: Dispatch<SetStateAction<boolean>>
     readonly setTranslations: Dispatch<SetStateAction<Translation | null>>
     readonly setError: Dispatch<SetStateAction<string | null>>
-    /** Callback to notify parent when form area is clicked */
     readonly onFormAreaClick?: (clicked: boolean) => void
 }
 
-/**
- * Form component for submitting text to be translated.
- * Handles form validation, submission, and error states.
- * Supports keyboard shortcut (Cmd+Enter) for form submission.
- */
 export function TranslationForm({
     loading,
     setLoading,
@@ -54,20 +43,18 @@ export function TranslationForm({
 
     const form = useForm<TranslationFormData>({
         resolver: zodResolver(translationFormSchema),
-        defaultValues: {
-            query: "",
-        },
+        defaultValues: { query: "" },
     })
+
+    const query = form.watch("query")
 
     const handleFormAreaClick = useCallback((): void => {
         onFormAreaClick?.(true)
-        // Automatically focus the textarea when clicking anywhere in the form area
         textareaRef.current?.focus()
     }, [onFormAreaClick])
 
     const handleFormAreaBlur = useCallback(
         (event: React.FocusEvent): void => {
-            // Only trigger blur if focus is moving outside the form area
             if (!formAreaRef.current?.contains(event.relatedTarget as Node)) {
                 onFormAreaClick?.(false)
             }
@@ -79,14 +66,11 @@ export function TranslationForm({
         async (values: TranslationFormData) => {
             const formData = new FormData()
             formData.append("query", values.query)
-
             setTranslations(null)
             setError(null)
-
             try {
                 setLoading(true)
                 const { error, success, translations } = await getTranslations(formData)
-
                 if (success && translations) {
                     setTranslations(translations)
                 } else {
@@ -95,7 +79,6 @@ export function TranslationForm({
                     toast.error(message)
                 }
             } catch {
-                // TODO: Reemplazar por un servicio de monitoreo de errores (ej. Sentry) para capturar stack traces en producción
                 const message = "Ocurrió un error al procesar la traducción"
                 setError(message)
                 toast.error(message)
@@ -118,47 +101,66 @@ export function TranslationForm({
 
     return (
         <div
-            className="p-8"
+            className="p-8 flex flex-col gap-5 h-full"
             ref={formAreaRef}
             onClick={handleFormAreaClick}
             onBlur={handleFormAreaBlur}
             tabIndex={-1}
         >
+            {/* Panel label */}
+            <div className="flex items-center gap-3">
+                <span className="font-mono text-[10px] font-bold tracking-[3px] uppercase text-[#1a1a1a] shrink-0">
+                    Español →
+                </span>
+                <div className="flex-1 h-px bg-[#1a1a1a] opacity-20" />
+            </div>
+
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-5">
                     <FormField
                         control={form.control}
                         name="query"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="sr-only">Texto a traducir</FormLabel>
                                 <FormControl>
-                                    <Textarea
-                                        className="min-h-[120px] md:text-xl text-xl leading-relaxed border-0 shadow-none focus-visible:ring-2 focus-visible:ring-neutral-400 font-sans p-0 resize-none"
-                                        placeholder="Escribe el texto que quieres traducir... (Cmd+Enter para traducir)"
-                                        disabled={loading}
-                                        ref={(el) => {
-                                            textareaRef.current = el
-                                            field.ref(el)
-                                        }}
-                                        onKeyDown={handleTextareaKeyDown}
-                                        onBlur={field.onBlur}
-                                        name={field.name}
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                    />
+                                    <div className="relative border-2 border-[#1a1a1a] bg-white">
+                                        <textarea
+                                            aria-label="Texto a traducir"
+                                            className="w-full min-h-[160px] p-4 font-sans text-base leading-relaxed text-[#1a1a1a] bg-transparent border-0 resize-none outline-none placeholder:text-[#aaa] placeholder:italic disabled:opacity-50"
+                                            placeholder="Escribe el texto que quieres traducir..."
+                                            disabled={loading}
+                                            ref={(el) => {
+                                                textareaRef.current = el
+                                                field.ref(el)
+                                            }}
+                                            onKeyDown={handleTextareaKeyDown}
+                                            onBlur={field.onBlur}
+                                            name={field.name}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                        <span className="absolute bottom-2.5 right-3.5 font-mono text-[9px] text-[#aaa] tracking-[1px]">
+                                            {query.length} / 350
+                                        </span>
+                                    </div>
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage className="font-mono text-[10px] tracking-[1px] text-[#cc3300]" />
                             </FormItem>
                         )}
                     />
-                    <Button
+
+                    <button
                         type="submit"
-                        className="text-neutral-100 font-medium bg-neutral-600 hover:bg-neutral-900 transition-colors"
                         disabled={loading || !form.formState.isValid}
+                        className="w-full bg-[#4a90d9] hover:bg-[#2d6bb0] disabled:opacity-40 border-2 border-[#1a1a1a] px-6 py-3.5 font-mono text-[11px] font-bold tracking-[3px] uppercase text-white flex items-center justify-between transition-colors cursor-pointer disabled:cursor-not-allowed"
                     >
-                        {loading ? "Traduciendo…" : "Traducir"}
-                    </Button>
+                        <span>{loading ? "Traduciendo…" : "Traducir"}</span>
+                        <span className="text-[10px] opacity-70 tracking-[1px]">⌘ + ↵</span>
+                    </button>
+
+                    <span className="font-mono text-[10px] tracking-[1px] text-[#1a1a1a] opacity-40">
+                        Mínimo 10 caracteres · Máximo 350
+                    </span>
                 </form>
             </Form>
         </div>
