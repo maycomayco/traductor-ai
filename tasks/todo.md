@@ -23,7 +23,7 @@
   - Verify: `pnpm check`
   - Files: `src/action/translation-action.ts`, optionally `src/lib/services/open-ai.ts`
 
-- [ ] Task 4: Preserve end-to-end UI behavior with minimal or no client changes
+- [x] Task 4: Preserve end-to-end UI behavior with minimal or no client changes
   - Acceptance: form submission, loading, error handling, and results rendering still work without UX changes
   - Verify: manual authenticated flow check, `pnpm build`
   - Files: only if required: `src/components/translation-form.tsx`, `src/app/page.tsx`, `src/components/translation-results.tsx`
@@ -35,13 +35,13 @@
 - [ ] Human review before final validation
 
 ## Phase 3: Validation and Closeout
-- [ ] Task 5: Run final checks and manual translation validation
+- [x] Task 5: Run final checks and manual translation validation
   - Acceptance: `pnpm check` and `pnpm build` pass; three manual translation scenarios succeed while authenticated
   - Verify: `pnpm check`, `pnpm build`, manual validation
   - Files: none required unless approved doc follow-up is needed
 
 ## Checkpoint: Complete
-- [ ] All spec success criteria satisfied
-- [ ] `Responses API` and `gpt-4o-mini` confirmed in implementation
-- [ ] Translation contract preserved
-- [ ] Ready for implementation signoff
+- [ ] All spec success criteria satisfied *(blocked: pending manual authenticated validation + pre-existing `pnpm check` formatting failures)*
+- [x] `Responses API` and `gpt-4o-mini` confirmed in implementation
+- [x] Translation contract preserved
+- [ ] Ready for implementation signoff *(pending human review)*

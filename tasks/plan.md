@@ -186,16 +186,16 @@ Confirm the existing client flow continues to work with the migrated backend pat
 Run the required verification pass for the migrated flow, including project checks and the manual scenarios defined in `SPEC.md`.
 
 **Acceptance criteria:**
-- [ ] `pnpm check` passes
-- [ ] `pnpm build` passes
-- [ ] Manual translation validation covers a short casual sentence
-- [ ] Manual translation validation covers a longer work-related sentence
-- [ ] Manual translation validation covers an idiomatic or informal sentence
-- [ ] Returned data remains usable and correctly structured in all manual checks
+- [ ] `pnpm check` passes *(blocked by pre-existing repository-wide Biome formatting issues unrelated to this migration)*
+- [x] `pnpm build` passes
+- [ ] Manual translation validation covers a short casual sentence *(pending authenticated runtime validation)*
+- [ ] Manual translation validation covers a longer work-related sentence *(pending authenticated runtime validation)*
+- [ ] Manual translation validation covers an idiomatic or informal sentence *(pending authenticated runtime validation)*
+- [ ] Returned data remains usable and correctly structured in all manual checks *(pending authenticated runtime validation)*
 
 **Verification:**
-- [ ] Run `pnpm check`
-- [ ] Run `pnpm build`
+- [x] Run `pnpm check` *(executed; currently fails due to pre-existing repository-wide Biome formatting issues)*
+- [x] Run `pnpm build`
 - [ ] Perform the three manual translation scenarios while authenticated
 
 **Dependencies:** Task 4
@@ -208,9 +208,9 @@ Run the required verification pass for the migrated flow, including project chec
 
 ### Checkpoint: Complete
 - [ ] All approved spec success criteria are met
-- [ ] The OpenAI SDK is updated to `6.1.0`
-- [ ] The service uses `Responses API` with `gpt-4o-mini`
-- [ ] The translation contract remains unchanged
+- [x] The OpenAI SDK is updated to `6.1.0`
+- [x] The service uses `Responses API` with `gpt-4o-mini`
+- [x] The translation contract remains unchanged
 - [ ] Required checks and manual validation are complete
 - [ ] Ready for human review and implementation signoff
 
