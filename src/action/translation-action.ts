@@ -24,9 +24,9 @@ export async function getTranslations(
     }
 
     try {
-        const query = formData.get("query") as string
+        const queryValue = formData.get("query")
 
-        if (!query || query.trim() === "") {
+        if (typeof queryValue !== "string") {
             return {
                 success: false,
                 error: "El texto no puede estar vacío",
@@ -34,7 +34,15 @@ export async function getTranslations(
             }
         }
 
-        const translations = await createTranslation({ query: query })
+        if (queryValue.trim() === "") {
+            return {
+                success: false,
+                error: "El texto no puede estar vacío",
+                translations: null,
+            }
+        }
+
+        const translations = await createTranslation({ query: queryValue })
 
         return {
             success: true,

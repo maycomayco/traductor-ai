@@ -130,15 +130,15 @@ Refactor `src/lib/services/open-ai.ts` to replace `Configuration` and `OpenAIApi
 Update `src/action/translation-action.ts` only as needed so it continues to authenticate the user, validate the incoming query, call the migrated translation service, and return the same response envelope consumed by the UI.
 
 **Acceptance criteria:**
-- [ ] Clerk auth behavior is unchanged
-- [ ] Empty-query handling remains intact
-- [ ] Successful translations are still returned under `translations`
-- [ ] Service failures are mapped to the existing error response shape
-- [ ] No contract changes are introduced for the client caller
+- [x] Clerk auth behavior is unchanged
+- [x] Empty-query handling remains intact
+- [x] Successful translations are still returned under `translations`
+- [x] Service failures are mapped to the existing error response shape
+- [x] No contract changes are introduced for the client caller
 
 **Verification:**
-- [ ] `pnpm check` passes for the action and related code
-- [ ] Manual review confirms the action response shape remains `success`, `error`, `translations`
+- [ ] `pnpm check` passes for the action and related code *(blocked by pre-existing repository-wide Biome formatting issues unrelated to this task)*
+- [x] Manual review confirms the action response shape remains `success`, `error`, `translations`
 
 **Dependencies:** Task 2
 
@@ -154,14 +154,14 @@ Update `src/action/translation-action.ts` only as needed so it continues to auth
 Confirm the existing client flow continues to work with the migrated backend path. Only apply minimal code changes if the server-action contract or runtime behavior requires them.
 
 **Acceptance criteria:**
-- [ ] The form can still submit valid text through the existing action call
-- [ ] Loading and error states still work in the current UI flow
-- [ ] Successful translations still render in the results panel without UI contract changes
-- [ ] No copy, validation-limit, or layout changes are introduced
+- [x] The form can still submit valid text through the existing action call
+- [x] Loading and error states still work in the current UI flow
+- [x] Successful translations still render in the results panel without UI contract changes
+- [x] No copy, validation-limit, or layout changes are introduced
 
 **Verification:**
-- [ ] Manual flow check through the app UI
-- [ ] `pnpm build` succeeds
+- [ ] Manual flow check through the app UI *(pending authenticated runtime validation)*
+- [x] `pnpm build` succeeds
 
 **Dependencies:** Task 3
 

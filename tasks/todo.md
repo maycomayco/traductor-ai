@@ -18,7 +18,7 @@
 - [ ] Human review before continuing if parsing strategy changed materially
 
 ## Phase 2: Server Action Compatibility
-- [ ] Task 3: Align the server action with the migrated service
+- [x] Task 3: Align the server action with the migrated service
   - Acceptance: auth, empty-query handling, and `{ success, error, translations }` response shape remain unchanged
   - Verify: `pnpm check`
   - Files: `src/action/translation-action.ts`, optionally `src/lib/services/open-ai.ts`
@@ -29,9 +29,9 @@
   - Files: only if required: `src/components/translation-form.tsx`, `src/app/page.tsx`, `src/components/translation-results.tsx`
 
 ## Checkpoint: Phase 2 Review
-- [ ] Authenticated flow works end-to-end
-- [ ] No UI-facing contract changes introduced
-- [ ] Build passes
+- [ ] Authenticated flow works end-to-end *(pending manual authenticated validation)*
+- [x] No UI-facing contract changes introduced
+- [x] Build passes
 - [ ] Human review before final validation
 
 ## Phase 3: Validation and Closeout
