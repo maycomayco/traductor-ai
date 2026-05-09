@@ -97,15 +97,15 @@ Replace `openai@3.3` with `openai@6.1.0` in the project dependency graph so the 
 Refactor `src/lib/services/open-ai.ts` to replace `Configuration` and `OpenAIApi` with the modern `OpenAI` client, send the translation request through the `Responses API`, and parse the result back into the existing translation contract.
 
 **Acceptance criteria:**
-- [ ] Legacy SDK imports and `createChatCompletion()` usage are removed
-- [ ] The service uses the modern `OpenAI` client and `Responses API`
-- [ ] The model is fixed to `gpt-4o-mini`
-- [ ] The service returns a validated object with `writing`, `speaking`, and `coloquial`
-- [ ] Parsing failures produce a controlled service error rather than leaking malformed data
+- [x] Legacy SDK imports and `createChatCompletion()` usage are removed
+- [x] The service uses the modern `OpenAI` client and `Responses API`
+- [x] The model is fixed to `gpt-4o-mini`
+- [x] The service returns a validated object with `writing`, `speaking`, and `coloquial`
+- [x] Parsing failures produce a controlled service error rather than leaking malformed data
 
 **Verification:**
-- [ ] Static validation passes for the service file with `pnpm check`
-- [ ] Manual inspection confirms the service still exposes the expected return shape
+- [ ] Static validation passes for the service file with `pnpm check` *(blocked by pre-existing repository-wide Biome formatting issues unrelated to this task)*
+- [x] Manual inspection confirms the service still exposes the expected return shape
 
 **Dependencies:** Task 1
 
@@ -118,8 +118,8 @@ Refactor `src/lib/services/open-ai.ts` to replace `Configuration` and `OpenAIApi
 
 ### Checkpoint: After Phase 1
 - [ ] The dependency upgrade is complete
-- [ ] The legacy OpenAI client usage is removed from the service layer
-- [ ] The service-level contract is still clearly defined as `{ writing, speaking, coloquial }`
+- [x] The legacy OpenAI client usage is removed from the service layer
+- [x] The service-level contract is still clearly defined as `{ writing, speaking, coloquial }`
 - [ ] Human review before proceeding to server-action integration if the response parsing approach changed materially
 
 ### Phase 2: Server Action Compatibility

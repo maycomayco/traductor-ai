@@ -6,15 +6,15 @@
   - Verify: `pnpm install`
   - Files: `package.json`, `pnpm-lock.yaml`
 
-- [ ] Task 2: Migrate the translation service to the modern client and `Responses API`
+- [x] Task 2: Migrate the translation service to the modern client and `Responses API`
   - Acceptance: `src/lib/services/open-ai.ts` uses the current SDK, `Responses API`, fixed model `gpt-4o-mini`, and returns validated `{ writing, speaking, coloquial }`
   - Verify: `pnpm check`
   - Files: `src/lib/services/open-ai.ts`, optionally `src/lib/schemas/index.ts`, `src/types.ts`
 
 ## Checkpoint: Phase 1 Review
 - [ ] Dependency upgrade completed
-- [ ] Legacy OpenAI client usage removed
-- [ ] Translation service contract still preserved
+- [x] Legacy OpenAI client usage removed
+- [x] Translation service contract still preserved
 - [ ] Human review before continuing if parsing strategy changed materially
 
 ## Phase 2: Server Action Compatibility
